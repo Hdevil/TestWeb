@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+  		"-//OpenSymphony Group//XWork Validator 1.0.3//EN"
+  		"http://www.opensymphony.com/xwork/xwork-validator-1.0.3.dtd">
+
+<validators>
+
+   	<field name="email">
+		<field-validator type="requiredstring">
+			<message>邮箱不能为空</message>
+		</field-validator>
+	  	<!-- <field-validator type="email">
+
+			<message>
+				请按正确的邮箱格式进行填写
+			</message>
+		</field-validator> -->
+		
+	</field>
+
+
+	<field name="username">
+		<field-validator type="requiredstring">
+			<message>用户名不能为空</message>
+		</field-validator>
+	 	<!-- <field-validator type="regex">
+			<param name="expression">^[a-zA-Z][a-zA-Z0-9_]{3,14}$</param>
+			<message>
+				用户名只能是以字母开头，后面可以跟字母、数字或下滑线，长度只能是4-15位
+			</message>
+		</field-validator> -->
+		
+	</field>
+
+	<field name="password">
+		<field-validator type="requiredstring">
+			<message>密码不能为空</message>
+		</field-validator>
+		<!-- <field-validator type="regex">
+			<param name="expression">^[a-zA-Z0-9]{6,15}$</param>
+			<message>
+				密码有数字或字母组成，长度只能是6-15位
+			</message>
+		</field-validator> -->
+	</field>
+	<field name="password2">
+	<field-validator type="requiredstring">
+			<message>密码不能为空</message>
+		</field-validator>
+		<!-- <field-validator type="fieldexpression">
+		  <param name="expression"><![CDATA[password2==password]]></param>
+			<message>密码不一致</message>
+		</field-validator> -->
+	</field>
+	
+</validators>

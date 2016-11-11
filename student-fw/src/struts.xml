@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring"></constant>
+	
+	<package name="login" namespace="/login" extends="struts-default">
+		
+		<action name="registerAction" class="RegisterAction">
+			<result name="input">/index.jsp?reg_res=2</result>
+			<result  type="redirect">/index.jsp?reg_res=${reg_res}</result>
+		</action>
+		
+		<action name="loginAction" class="LoginAction">
+			<result name="log1" type="redirectAction">
+			 <param name="actionName">mainAction</param>
+			 <param name="namespace">/main</param>
+			</result>
+			<result name="input">/index.jsp?log_res=${log_res}</result>
+			<result name="log3" type="redirectAction">
+			<param name="actionName">blackAction</param>
+			 <param name="namespace">/main</param>
+			</result>
+		</action>
+		
+	</package>
+	<package name="main" namespace="/main" extends="struts-default">
+		
+		 <!-- 定义一个拦截器 -->  
+        <interceptors>  
+        
+            <interceptor name="loginInterceptor"  
+                class="com.jz.interceptor.LoginInterceptor">  
+            </interceptor>  
+            
+            <interceptor name="autoInterceptor"  
+                class="com.jz.interceptor.AutoInterceptor">  
+            </interceptor> 
+            
+            <interceptor name="blackInterceptor"  
+                class="BlackInterceptor">  
+            </interceptor>
+            
+            <!-- 拦截器栈 -->  
+            <interceptor-stack name="mydefault">  
+                <interceptor-ref name="defaultStack" />  
+                <interceptor-ref name="autoInterceptor" />  
+                <interceptor-ref name="loginInterceptor" />  
+                <interceptor-ref name="blackInterceptor" />  
+            </interceptor-stack>  
+        </interceptors>  
+		
+		 <default-interceptor-ref name="mydefault"></default-interceptor-ref>  
+		
+		 <!-- 定义全局Result -->  
+        <global-results>  
+            <!-- 当返回login视图名时，转入/login.jsp页面 -->  
+            <result name="login">/index.jsp</result> 
+             <result name="mainAction"  type="redirectAction">
+				<param name="actionName">mainAction</param>
+			 </result> 
+			  <result name="error">/black_error.jsp</result> 
+        </global-results>
+        <!--全局拦截器  -->
+		<!-- <default-interceptor-ref name="mydefault"></default-interceptor-ref> -->
+		<action name="mainAction" class="MainAction">
+			<result>/main.jsp</result>
+			 <!-- 使用此拦截器 -->  
+             <!-- <interceptor-ref name="mydefault" />   -->
+		</action>
+		
+		<action name="studAdd" class="StudOpAction" method="add">
+			<result name="input" type="redirectAction">mainAction?clsId=${claszId}</result>
+		</action>
+		<action name="studDel" class="StudOpAction" method="del">
+			<result type="redirectAction">mainAction?clsId=${claszId}</result>
+		</action>
+		<action name="studEdit" class="StudOpAction" method="edit">
+			<result type="redirectAction">mainAction?clsId=${claszId}</result>
+		</action>
+		
+		<action name="claszAdd" class="ClaszOpAction" method="add">
+			<result type="redirectAction">mainAction</result>
+		</action>
+		<action name="claszDel" class="ClaszOpAction" method="del" > 
+			<result  type="redirectAction">mainAction</result>
+			
+		</action>
+		<action name="claszEdit" class="ClaszOpAction" method="edit">
+			<result type="redirectAction">mainAction?clsId=${clasz.id}</result>
+		</action>
+		
+		<action name="exitAction" class="com.jz.action.ExitAction" >
+			<result>/index.jsp</result>
+		</action>
+		
+		<action name="blackAction" class="BlackAction" >
+			<result>/black.jsp</result>
+			<!-- <interceptor-ref name="mydefault" />  -->  
+		</action>
+		
+		<action name="bloptAction" class="BlackOptAction">
+			<result type="redirectAction" name="back1">blackAction?opt=${opt}</result>
+		</action>
+		<!--  <action name="bloptIn" class="com.jz.action.BlackOptAction" method="in">
+			<result type="redirectAction">blackAction</result>
+		</action>
+		<action name="bloptOut" class="com.jz.action.BlackOptAction" method="out">
+			<result type="redirectAction">blackAction</result>
+		</action>
+		-->
+		<action name="uploadAction" class="BlackAction" method="uploadImage">
+			<result type="redirectAction" >blackAction</result>
+		</action>
+	</package>
+	
+</struts>
+  
